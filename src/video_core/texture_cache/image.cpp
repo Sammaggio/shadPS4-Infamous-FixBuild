@@ -44,10 +44,11 @@ static vk::ImageUsageFlags ImageUsageFlags(const Vulkan::Instance& instance,
         // compressed formats, but may be used for uncompressed views. In order to satisfy this,
         // we will also specify the extended usage bit.
         // AMD FIX: Strip storage usage flag if the format is BC5 to avoid Vulkan allocation failure.
-        if (info.pixel_format != vk::Format::eBc5UnormBlock && info.pixel_format != vk::Format::eBc5SnormBlock) {
+        if (!info.props.is_block) {
             usage |= vk::ImageUsageFlagBits::eStorage;
         }
     }
+
 
 static vk::ImageType ConvertImageType(AmdGpu::ImageType type) noexcept {
     switch (type) {
